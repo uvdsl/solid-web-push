@@ -1,0 +1,34 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix dc: <http://purl.org/dc/terms/>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@prefix as: <https://www.w3.org/ns/activitystreams#>.
+@prefix ldp: <http://www.w3.org/ns/ldp#>.
+@prefix push: <https://purl.org/solid-web-push/vocab#>.
+
+<> a as:Profile;
+	rdfs:label "The profile of the Solid Web Push Service"@en;
+	as:summary 
+"""The described resource is a Service called Solid Web Push. 
+To subscribe to the service, post the subscription to the provided URI. 
+The should indicate which resource the subscriber whishes to receive updates on (as:Follow, as:target)""";
+	dc:creator <https://uvdsl.solid.aifb.kit.edu/profile/card#me>;
+	as:describes <#web-push> .
+
+<#web-push> a as:Service;
+	as:name "Solid Web Push"@en;
+	rdfs:label "Solid Web Push Service"@en;
+	ldp:inbox <https://solid.aifb.kit.edu/web-push/subscribe/>; 
+	push:vapidPublicKey "BMUCmCJBe7nNO1bpz8ZwjvlLyReoWxFupm447jDZpO_UcLxs8ZHks7UECWgL67XwIlWIgfj4VU5bR8-2oyzKkeY"^^xsd:base64Binary;
+	rdfs:seeAlso <#exampleSubscription> .
+
+<#exampleSubscription> a as:Follow;
+	rdfs:label "An example subscription for human agents to look at.";
+	as:actor <https://uvdsl.solid.aifb.kit.edu/profile/card#me>;
+	as:object <https://uvdsl.solid.aifb.kit.edu/inbox/>;
+	push:endpoint "https://fcm.googleapis.com/fcm/send/fH07g...";
+	# expirationTime: null # undefined
+	push:keys [
+			push:p256dh "BMuXyO5...";
+			push:auth "wGYi99..."
+		  ].

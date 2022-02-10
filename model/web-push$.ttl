@@ -1,0 +1,91 @@
+@base <https://uvdsl.solid.aifb.kit.edu/ontology/web-push#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix as: <https://www.w3.org/ns/activitystreams#>.
+@prefix push: <https://uvdsl.solid.aifb.kit.edu/ontology/web-push#> .
+
+
+<https://uvdsl.solid.aifb.kit.edu/ontology/web-push#> a owl:Ontology ;
+    dc:title "Solid Web Push Ontology" ;
+    dc:date "2022-02-09" ;
+    dc:creator <https://uvdsl.solid.aifb.kit.edu/profile/card#me> ;
+    dc:description "This is an RDF vocabulary to model the Solid Web Push." .
+
+push:vapidPublicKey a rdf:Property ;
+    rdfs:isDefinedBy <https://www.rfc-editor.org/rfc/rfc8292> ;
+    rdfs:label "VAPID Public Key" ;
+    rdfs:comment """
+In order for the push service to be able to validate the JWT, it
+needs to learn the public key of the application server.  Also referred
+to as the 'k' parameter, the public key parameter is defined for the 
+'vapid' authentication scheme to carry this information.
+The parameter includes an ECDSA public key [FIPS186] in uncompressed form [X9.62] 
+that is encoded using base64url encoding [RFC7515].
+                """ ;
+    rdfs:domain as:Service ;
+    rdfs:range xsd:base64Binary.
+
+push:vapidPrivateKey a rdf:Property ;
+    rdfs:isDefinedBy <https://datatracker.ietf.org/doc/rfc8292/> ;
+    rdfs:label "VAPID Private Key" ;
+    rdfs:comment """
+When a push message subscription has been restricted to an application server, 
+the request for push message delivery MUST include a JWT signed by the private key 
+that corresponds to the public key used when creating the subscription.
+The parameter includes an ECDSA public key that is encoded using base64url encoding [RFC7515].
+                """ ;
+    rdfs:domain as:Service ;
+    rdfs:range xsd:base64Binary.
+
+push:endpoint a rdf:Property ;
+    rdfs:isDefinedBy <https://www.w3.org/TR/push-api/> ;
+    rdfs:label "Push Subscription Endpoint" ;
+    rdfs:comment """
+The push endpoint of a PushSubscription is a URL that allows an application server 
+to request delivery of a push message to a web application. A push subscription has 
+an associated push endpoint. It MUST be the absolute URL exposed by the push service 
+where the application server can send push messages to. 
+A push endpoint MUST uniquely identify the push subscription.
+                """ ;
+    rdfs:domain as:Follow ;
+    rdfs:range xsd:string.
+
+push:keys a rdf:Property ;
+    rdfs:isDefinedBy <https://www.w3.org/TR/push-api/> ;
+    rdfs:label "Push Subscription Keys" ;
+    rdfs:comment """
+The keys property links the Subscription to its key values necessary for weak authentification.
+                """ ;
+    rdfs:domain as:Follow ;
+    rdfs:range push:Keys.
+
+push:Keys a rdfs:Class;
+    rdfs:label "Push Subscription Keys" ;
+    rdfs:comment """
+The keys record contains an entry for each of the supported PushEncryptionKeyName entries 
+to the URL-safe base64 encoded representation [RFC4648] of its value.
+Keys named 'p256dh' and 'auth' MUST be supported, and their values MUST correspond to those 
+necessary for the user agent to decrypt received push messages in accordance with [RFC8291].
+                """ .
+
+push:auth a rdf:Property ;
+    rdfs:isDefinedBy <https://www.rfc-editor.org/rfc/rfc8291> ;
+    rdfs:label "Push Subscription Authentication Value" ;
+    rdfs:comment """
+The auth value is used to retrieve the authentication secret.
+                """ ;
+    rdfs:domain push:keys ;
+    rdfs:range xsd:base64Binary.
+
+push:p256dh a rdf:Property ;
+    rdfs:isDefinedBy <https://www.rfc-editor.org/rfc/rfc8291> ;
+    rdfs:label "Push Subscription Authentication Value" ;
+    rdfs:comment """
+For each new subscription that the user agent generates for an application, 
+it also generates a P-256 [FIPS186] key pair for use in ECDH.
+                """ ;
+    rdfs:domain as:Follow ;
+    rdfs:range xsd:base64Binary.

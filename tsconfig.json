@@ -1,0 +1,19 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "ES2016",
+        "declaration": true,
+        "esModuleInterop": true,
+        "outDir": "./dist"
+    },
+    "include": [
+        "src/*"
+    ],
+    "exclude": [
+        "./test/",
+        "./node_modules/",
+        "./dist/",
+        "./coverage/",
+        ".nyc_output"
+      ],
+}
