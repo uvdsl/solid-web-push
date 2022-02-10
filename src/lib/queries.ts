@@ -3,7 +3,6 @@ import { SolidSub } from "../solidSub";
 import { WebPushSubscription } from "../webPush";
 import { AS, PUSH, RDF } from "./namespaces";
 
-
 export const getFollowSubs = (store: Store) => {
   const follows = store.getSubjects(RDF("type"), AS("Follow"), null);
   const subs = follows.map((follow) => {
@@ -12,7 +11,7 @@ export const getFollowSubs = (store: Store) => {
     if (undo.length > 0) return undefined;
     // else get the sub
     try {
-      const object = store.getObjects(follow, AS("objcet"), null)[0].value;
+      const object = store.getObjects(follow, AS("object"), null)[0].value;
       const endpoint = store.getObjects(follow, PUSH("endpoint"), null)[0]
         .value;
       const keys = store.getObjects(follow, PUSH("keys"), null)[0];
@@ -26,7 +25,7 @@ export const getFollowSubs = (store: Store) => {
           keys: { auth, p256dh },
         } as WebPushSubscription,
       } as SolidSub;
-    } catch {
+    } catch (err) {
       return undefined;
     }
   });
@@ -36,10 +35,10 @@ export const getFollowSubs = (store: Store) => {
 export const getUndoSubs = (store: Store) => {
   const undos = store.getSubjects(RDF("type"), AS("Undo"), null);
   const undosubs = undos.map((undo) => {
-    const follows = store.getObjects(undo, AS("objcet"), null);
+    const follows = store.getObjects(undo, AS("object"), null);
     const undosubs = follows.map((follow) => {
       try {
-        const object = store.getObjects(follow, AS("objcet"), null)[0].value;
+        const object = store.getObjects(follow, AS("object"), null)[0].value;
         const endpoint = store.getObjects(follow, PUSH("endpoint"), null)[0]
           .value;
         const keys = store.getObjects(follow, PUSH("keys"), null)[0];
@@ -53,7 +52,7 @@ export const getUndoSubs = (store: Store) => {
             keys: { auth, p256dh },
           } as WebPushSubscription,
         } as SolidSub;
-      } catch {
+      } catch (err) {
         return undefined;
       }
     });

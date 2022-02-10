@@ -1,6 +1,6 @@
 import { Store } from "n3";
 import { LDP } from "./lib/namespaces";
-import { getResource, parseToN3 } from "./lib/solidRequests";
+import { parseToN3 } from "./lib/parse";
 import { getFollowSubs, getUndoSubs } from "./lib/queries";
 import { SolidNodeClient } from "solid-node-client";
 import {
@@ -33,6 +33,10 @@ const addSubscriptions = (
   follows.forEach((follow) => {
     // look at the object of the follow and
     // check if some element of existing subs is equal to the current one
+    const existing = subs.get(follow.object);
+    if (!existing) {
+      subs.set(follow.object, []);
+    }
     if (subs.get(follow.object).some((e) => areEqual(e.sub, follow.sub)))
       return;
     // if not, then the current one is new, add
@@ -87,9 +91,12 @@ export const updateSubsAndCons = async (
   subscriptions: Map<string, SolidSub[]>,
   connections: Map<string, WebSocket>
 ) => {
+  console.log("Update");
   const store = new Store();
   // get all the subscription items
-  const resp = await getResource(inboxURI, client.fetch);
+  const resp = await client.fetch(inboxURI, {
+    headers: { Accept: "text/turtle" },
+  });
   const txt = await resp.text();
   const { store: inboxStore } = await parseToN3(txt, inboxURI);
   const inboxItems = inboxStore
@@ -97,17 +104,22 @@ export const updateSubsAndCons = async (
     .map((obj) => obj.value);
   // get current status of subs and undos
   const subStorePromises = inboxItems.map((itemURI) =>
-    getResource(itemURI, client.fetch)
+    client
+      .fetch(itemURI, { headers: { Accept: "text/turtle" } })
       .then((resp) => resp.text())
       .then((txt) => parseToN3(txt, itemURI))
+      .catch(() => {
+        return { store: new Store() };
+      })
       .then((parsedN3) => parsedN3.store)
       .then((pstore) => store.addQuads(pstore.getQuads(null, null, null, null)))
   );
   await Promise.all(subStorePromises);
-  // add new subs
+  // get from RDF
   const follows = getFollowSubs(store);
   const undos = getUndoSubs(store);
-
+  console.log(undos)
+  // add new subs
   addSubscriptions(subscriptions, follows);
   // undo any subs
   removeSubscriptions(subscriptions, undos);

@@ -50,6 +50,8 @@ async function main() {
       // resource updated, dispatch event for web push
       console.log("### INBOX\t| PUB\n" + msg.data.toString().substring(4));
       await updateSubsAndCons(client, inbox, subscriptions, connections);
+      console.log(subscriptions)
+      console.log(connections)
     }
   };
 
