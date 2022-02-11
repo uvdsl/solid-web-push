@@ -132,6 +132,10 @@ import webpush from "web-push";
 let vapidKeys = webpush.generateVAPIDKeys();
 console.log(vapidKeys);
 ```
+or
+```
+npx ts-node src/generateKeys.ts
+```
 
 You also need to define the inbox of the service, i.e. where the clients post their Solid Web Push Subscriptions and Unsubscriptions to.
 
