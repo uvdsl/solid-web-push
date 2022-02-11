@@ -40,7 +40,7 @@ They just unsubscribe from their subscription at the browsers messaging service.
 At the moment I am not sure, how stalling subscriptions are handled.
 Thus I included an Unsubscription to my demo, to facilitate housekeeping.
 
-This unsusbscription is of type `as:Undo` with its object having the exact same properties as the `as:Follow` subscription, the agent would like to undo or cancel.
+This unsusbscription is of type `as:Undo` with its `as:object` having the exact same properties as the `as:Follow` subscription, the agent would like to undo or cancel.
 It does not matter if the subscription is identified with its URI as the agent cannot be sure that this resource is still existing or if the service as processed and deleted the subscription resource.
 
 
@@ -139,4 +139,4 @@ npx ts--node src/index.ts
 ```
 
 ## Docker
-Or use docker :)
+Or use docker with the provided Dockerfile.
