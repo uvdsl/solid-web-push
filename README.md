@@ -87,6 +87,11 @@ If you are a person managing a Pod Server, then you can use variant (1) to mimic
 
 As the Solid Notifications Spec matures, this may change :)
 
+### Personally, I would propose variant (3) being added to the Spec for the following reasons:
+- I think that a pod-scoped service would fit well with the other notification schemes as (afaik) notifications are requested from the Pod they live in (or a custom implmeneted service) but the Pod itself feels most natural for me.
+- I imagine authentication and authorization being easier to implement than with the other approaches as the service can check authorization locally.
+- A additional pod-to-client notificatoin scheme would complement the other schemes (which are more pod-to-server / pod-to-pod oriented) well in my opinion.
+
 ### Additional Comments
 General:
 - _I do not want to take anything away from the currently proposed Solid Notification Spec!_
