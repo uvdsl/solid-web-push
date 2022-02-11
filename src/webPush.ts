@@ -22,7 +22,6 @@ export const notifySubscribersForResource = (
   uri: string,
   subscriptions: Map<string, SolidSub[]>,
   ) => {
-    subscriptions[uri].map((sub) =>
-    webpush.sendNotification(sub, `Resource was updated:\n${uri}`)
+    subscriptions.get(uri).map((solidSub) => webpush.sendNotification(solidSub.sub, `Resource was updated:\n${uri}`)
   );
 };

@@ -77,7 +77,7 @@ const updateConnections = async (
     ws.onmessage = (msg) => {
       if (msg.data && msg.data.slice(0, 3) === "pub") {
         // resource updated, dispatch event for web push
-        console.log("### SUB  \t| PUB\n" + msg.data.toString().substring(4));
+        console.log("### PUB  \t| On Resource\n" + msg.data.toString().substring(4));
         notifySubscribersForResource(msg.data.toString().substring(4), subs);
       }
     };
@@ -91,7 +91,6 @@ export const updateSubsAndCons = async (
   subscriptions: Map<string, SolidSub[]>,
   connections: Map<string, WebSocket>
 ) => {
-  console.log("Update");
   const store = new Store();
   // get all the subscription items
   const resp = await client.fetch(inboxURI, {
@@ -118,7 +117,6 @@ export const updateSubsAndCons = async (
   // get from RDF
   const follows = getFollowSubs(store);
   const undos = getUndoSubs(store);
-  console.log(undos)
   // add new subs
   addSubscriptions(subscriptions, follows);
   // undo any subs
