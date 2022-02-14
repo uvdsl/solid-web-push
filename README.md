@@ -149,3 +149,8 @@ npx ts--node src/index.ts
 
 ## Docker
 Or use docker with the provided Dockerfile.
+
+```
+sudo docker build -t solid-web-push:latest .
+docker run -d -p 8080:80 --name SOLID-WEB-PUSH solid-web-push:latest
+```
