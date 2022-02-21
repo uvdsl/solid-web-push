@@ -19,7 +19,9 @@ In addition, the agent specifies the `object` of the subscription, i.e. the reso
 The service receives the new subscription from the agent and listens for updates on that resource as an intermediary for the client.
 When the resource is updated, the service forwards the notification via Web Push to the client.
 
-
+The following sequence diagram is a simplification:
+![A excerpt of the Sequence Diagram.](./img/seq.svg)
+For an extensive sequence diagram, visit our [demo website](https://uvdsl.solid.aifb.kit.edu/conf/2022/icwe/demo).
 
 ### Service Profile
 The [Solid PWA](https://github.com/uvdsl/solid-web-pwa) relies on the service profile to learn the necessary information for subscription.
@@ -43,6 +45,9 @@ Thus I included an Unsubscription to my demo, to facilitate housekeeping.
 This unsusbscription is of type `as:Undo` with its `as:object` having the exact same properties as the `as:Follow` subscription, the agent would like to undo or cancel.
 It does not matter if the subscription is identified with its URI as the agent cannot be sure that this resource is still existing or if the service as processed and deleted the subscription resource.
 
+The following diagram illustrates our RDF data model:
+![The RDF datamodel](./img/datamodel.svg)
+The RDF datamodel underlying our Solid Web Push Notification scheme. We use CURIEs, abbreviated URIs, with prefixes from _http://prefix.cc/_. We use _push_ as prefix that is short for _https://purl.org/solid-web-push/vocab#_.
 
 ## Setup Variants
 
