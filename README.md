@@ -3,7 +3,7 @@
 This is a simple demo for Web Push Notifications for Solid PWAs.
 This server-side script subscribes via WebSocket to the resource and passes any notification on that resource from the server to the Solid PWA via Web Push.
 
-To experience Solid Web Push Notifications, see this [live demo] of a Solid PWA and visit the corresponding [code repository]().
+To experience Solid Web Push Notifications, see this [live demo](https://km.aifb.kit.edu/services/solid-web-pwa/) of a Solid PWA and visit the corresponding [code repository](https://github.com/uvdsl/solid-web-pwa).
 
 ## How it works.
 Basically, this service is a server-side script that lives in or along side a Solid Pod Server (see more setup variants below).
@@ -22,7 +22,7 @@ When the resource is updated, the service forwards the notification via Web Push
 
 
 ### Service Profile
-My [Solid PWA]() relies on the service profile to learn the necessary information for subscription.
+The [Solid PWA](https://github.com/uvdsl/solid-web-pwa) relies on the service profile to learn the necessary information for subscription.
 The service MUST be of type `as:Service` and MUST have the properties of `ldp:inbox` and `push:vapidPublicKey`.
 An example can be found [here](./model/service$.ttl).  
 
@@ -152,5 +152,5 @@ Or use docker with the provided Dockerfile.
 
 ```
 sudo docker build -t solid-web-push:latest .
-docker run -d -p 8080:80 --name SOLID-WEB-PUSH solid-web-push:latest
+docker run -d --name SOLID-WEB-PUSH solid-web-push:latest
 ```
