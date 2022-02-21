@@ -5,6 +5,8 @@ This server-side script subscribes via WebSocket to the resource and passes any 
 
 To experience Solid Web Push Notifications, see this [live demo](https://km.aifb.kit.edu/services/solid-web-pwa/) of a Solid PWA and visit the corresponding [code repository](https://github.com/uvdsl/solid-web-pwa).
 
+We also have a [demo website](https://uvdsl.solid.aifb.kit.edu/conf/2022/icwe/demo) with a short demo video.
+
 ## How it works.
 Basically, this service is a server-side script that lives in or along side a Solid Pod Server (see more setup variants below).
 
