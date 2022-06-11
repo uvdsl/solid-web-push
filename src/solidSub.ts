@@ -66,13 +66,13 @@ const updateConnections = async (
 ) => {
   // close unused ones
   for (const [cURI, ws] of cons.entries()) {
-    if (subs.has(cURI)) return;
+    if (subs.has(cURI)) continue;
     ws.close();
     cons.delete(cURI);
   }
   // open new ones
   for (const [sURI, ssub] of subs.entries()) {
-    if (cons.has(sURI)) return;
+    if (cons.has(sURI)) continue;
     const ws = await createWebSocketSub(sURI);
     ws.onmessage = (msg) => {
       if (msg.data && msg.data.slice(0, 3) === "pub") {

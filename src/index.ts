@@ -52,7 +52,9 @@ async function main() {
       // resource updated, dispatch event for web push
       console.log("### (UN)SUBSCRIBER");
       await updateSubsAndCons(client, inbox, subscriptions, connections);
+      console.log("### INFO  \t| Current subs:");
       console.log([...subscriptions.entries()].map(subs => `${subs[0]} : ${subs[1].length}`))
+      console.log("### INFO  \t| Current connections:");
       console.log([...connections.keys()])
     }
   };
