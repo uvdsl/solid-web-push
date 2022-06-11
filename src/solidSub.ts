@@ -89,7 +89,8 @@ export const updateSubsAndCons = async (
   client: SolidNodeClient,
   inboxURI: string,
   subscriptions: Map<string, SolidSub[]>,
-  connections: Map<string, WebSocket>
+  connections: Map<string, WebSocket>,
+  knownLDNs: Array<string>
 ) => {
   const store = new Store();
   // get all the subscription items
@@ -98,9 +99,12 @@ export const updateSubsAndCons = async (
   });
   const txt = await resp.text();
   const { store: inboxStore } = await parseToN3(txt, inboxURI);
-  const inboxItems = inboxStore
+  let inboxItems = inboxStore
     .getObjects(inboxURI, LDP("contains"), null)
     .map((obj) => obj.value);
+  // filter known
+  inboxItems = inboxItems.filter((item) => !knownLDNs.includes(item));
+  inboxItems.forEach(item => knownLDNs.push(item))
   // get current status of subs and undos
   const subStorePromises = inboxItems.map((itemURI) =>
     client

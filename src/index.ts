@@ -32,13 +32,14 @@ async function main() {
 
   const subscriptions: Map<string, SolidSub[]> = new Map();
   const connections: Map<string, WebSocket> = new Map();
+  const knownLDNs: Array<string> = [];
 
   const _uri = new URL(inbox);
   _uri.protocol = "wss";
   const ws = new WebSocket(_uri.href, ["solid-0.1"]);
 
   ws.onopen = async () => {
-    await updateSubsAndCons(client, inbox, subscriptions, connections);
+    await updateSubsAndCons(client, inbox, subscriptions, connections, knownLDNs);
     ws.send(`sub ${inbox}`);
     console.log("### INFO  \t| Current subs:");
     console.log([...subscriptions.entries()].map(subs => `${subs[0]} : ${subs[1].length}`))
@@ -51,7 +52,7 @@ async function main() {
     if (msg.data && msg.data.slice(0, 3) === "pub") {
       // resource updated, dispatch event for web push
       console.log("### (UN)SUBSCRIBER");
-      await updateSubsAndCons(client, inbox, subscriptions, connections);
+      await updateSubsAndCons(client, inbox, subscriptions, connections, knownLDNs);
       console.log("### INFO  \t| Current subs:");
       console.log([...subscriptions.entries()].map(subs => `${subs[0]} : ${subs[1].length}`))
       console.log("### INFO  \t| Current connections:");
