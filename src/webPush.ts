@@ -21,7 +21,14 @@ export const areEqual = (a: WebPushSubscription, b: WebPushSubscription) => {
 export const notifySubscribersForResource = (
   uri: string,
   subscriptions: Map<string, SolidSub[]>,
-  ) => {
-    subscriptions.get(uri).map((solidSub) => webpush.sendNotification(solidSub.sub, `Resource was updated:\n${uri}`)
+) => {
+  subscriptions.get(uri).map((solidSub) =>
+    webpush.sendNotification(solidSub.sub, `Resource was updated:\n${uri}`)
+      .catch(e /*WebPushError*/ => {
+        console.error("### ERR ("+ e.statusCode+")\t| Send notification to:"); // e.endpoint
+        console.error([e.endpoint]);
+        // TODO delete these solidSubs ...
+      })
+
   );
 };
